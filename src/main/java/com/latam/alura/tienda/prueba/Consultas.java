@@ -1,10 +1,12 @@
 package com.latam.alura.tienda.prueba;
 
 import com.latam.alura.tienda.dao.CategoriaDao;
+import com.latam.alura.tienda.dao.ClienteDao;
+import com.latam.alura.tienda.dao.PedidoDao;
 import com.latam.alura.tienda.dao.ProductoDao;
-import com.latam.alura.tienda.modelo.Categoria;
-import com.latam.alura.tienda.modelo.Producto;
+import com.latam.alura.tienda.modelo.*;
 import com.latam.alura.tienda.utiles.JPAUtils;
+import com.latam.alura.tienda.vo.RelatorioDeVenta;
 
 import javax.persistence.EntityManager;
 import java.math.BigDecimal;
@@ -15,7 +17,34 @@ public class Consultas {
         registrarProducto();
 
         EntityManager em = JPAUtils.getEntityManager();
+        ClienteDao clienteDao = new ClienteDao(em);
         ProductoDao productoDao = new ProductoDao(em);
+        PedidoDao pedidoDao = new PedidoDao(em);
+
+        Producto producto = productoDao.consultaPorId(1L);
+
+        Cliente cliente = new Cliente("Juan", "12312312");
+        Pedido pedido = new Pedido(cliente);
+        pedido.agregarItems(new ItemsPedido(5, producto, pedido));
+
+        em.getTransaction().begin();
+
+        BigDecimal res = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
+        System.out.println(res);
+
+        clienteDao.guardar(cliente);
+        pedidoDao.guardar(pedido);
+
+        em.getTransaction().commit();
+
+        BigDecimal total = pedidoDao.valorTotalVendido();
+        System.out.println("valor total: " + total);
+
+        List<RelatorioDeVenta> relatorioVO = pedidoDao.relatorioDeVentasVO();
+        relatorioVO.forEach(System.out::println);
+
+        // Estrategia para evitar errores con peticiones de tipo LAZY
+        Pedido pedidoConCliente =  pedidoDao.consultaPedidoConCliente(1L);
 
         // consultas simples
 //        Producto producto = productoDao.consultaPorId(1L);
@@ -31,9 +60,13 @@ public class Consultas {
 //        List<Producto> listaC = productoDao.consultaPorNombreDeCategoria("CELULARES");
 //        listaC.forEach(p -> System.out.println(p.getNombre()));
 
-        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
-        System.out.println(precio);
+//        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
+//        System.out.println(precio);
 
+        em.close();
+
+        // Acceder al elemento luego de cerrada al conexion (LAZY fetch)
+        System.out.println(pedidoConCliente.getCliente().getNombre());
     }
 
     private static void registrarProducto() {

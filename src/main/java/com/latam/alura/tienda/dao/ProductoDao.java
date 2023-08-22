@@ -46,9 +46,10 @@ public class ProductoDao {
         return em.createQuery(jpql, Producto.class).setParameter("categoria", categoria).getResultList();
     }
 
-    public BigDecimal consultarPrecioPorNombreDeProducto(String producto) {
-        String jpql = "SELECT P.precio FROM Producto AS P WHERE P.nombre=:producto";
-        return em.createQuery(jpql, BigDecimal.class).setParameter("producto", producto).getSingleResult();
+    public BigDecimal consultarPrecioPorNombreDeProducto(String nombre) {
+        // Utilzia NamedQuery, las cuales se definen en la misma instancia.
+        // Util a la hora de centralizar todas las consultas en un solo lugar, en vez de teneras esparcidas por el proyecto.
+        return em.createNamedQuery("Producto.precioPorNombre", BigDecimal.class).setParameter("nombre", nombre).getSingleResult();
     }
 
 }

@@ -7,8 +7,6 @@ import com.latam.alura.tienda.modelo.Producto;
 import com.latam.alura.tienda.utiles.JPAUtils;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.math.BigDecimal;
 
 public class RegistroDeProducto {

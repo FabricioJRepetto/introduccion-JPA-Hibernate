@@ -12,11 +12,12 @@ public class ItemsPedido {
     private Long id;
 
     private int cantidad;
-    private BigDecimal precioUnitario;
+    private BigDecimal precioUnitario = new BigDecimal(0);
 
-    @ManyToOne //? varios Items -> un Producto
+    @ManyToOne(fetch = FetchType.LAZY) //? varios Items -> un Producto
     private Producto producto;
-    @ManyToOne //? varios Items -> un Pedido
+
+    @ManyToOne(fetch = FetchType.LAZY) //? varios Items -> un Pedido
     private Pedido pedido;
 
     public ItemsPedido() {}
@@ -25,6 +26,7 @@ public class ItemsPedido {
         this.cantidad = cantidad;
         this.producto = producto;
         this.pedido = pedido;
+        this.precioUnitario = producto.getPrecio();
     }
 
     public int getCantidad() {
@@ -49,5 +51,9 @@ public class ItemsPedido {
 
     public void setPedido(Pedido pedido) {
         this.pedido = pedido;
+    }
+
+    public BigDecimal getValorTotal() {
+        return this.precioUnitario.multiply(new BigDecimal(this.cantidad));
     }
 }

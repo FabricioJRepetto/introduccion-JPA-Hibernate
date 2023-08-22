@@ -6,6 +6,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="productos")
+@NamedQuery(name="Producto.precioPorNombre",
+        query="SELECT P.precio FROM Producto AS P WHERE P.nombre=:nombre")
 public class Producto {
 
     @Id
@@ -16,10 +18,10 @@ public class Producto {
     private BigDecimal precio;
     private LocalDate fechaDeRegistro = LocalDate.now();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Categoria categoria;
 
-    public Producto() {    }
+    public Producto() {}
 
     public Producto(String nombre, String descripcion, BigDecimal precio, Categoria categoria) {
         this.nombre = nombre;
