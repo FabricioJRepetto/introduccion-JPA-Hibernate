@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Table(name="productos")
 @NamedQuery(name="Producto.precioPorNombre",
         query="SELECT P.precio FROM Producto AS P WHERE P.nombre=:nombre")
+@Inheritance(strategy = InheritanceType.JOINED) // JOINED: organizado en varias tablas - SINGLE_TABLE: mejor rendimiento en una sola tabla
 public class Producto {
 
     @Id
@@ -60,5 +61,17 @@ public class Producto {
 
     public void setPrecio(BigDecimal precio) {
         this.precio = precio;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", precio=" + precio +
+                ", fechaDeRegistro=" + fechaDeRegistro +
+                ", categoria=" + categoria.getNombre() +
+                '}';
     }
 }

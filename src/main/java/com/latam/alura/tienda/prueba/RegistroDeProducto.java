@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 
 public class RegistroDeProducto {
     public static void main(String[] args) {
-        Categoria celulares = new Categoria("CELULARES");
+        Categoria celulares = new Categoria("CELULARES", "123");
         Producto celular = new Producto("Motorola",
                 "Telefono usado",
                 new BigDecimal(1000),

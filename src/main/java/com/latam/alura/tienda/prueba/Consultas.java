@@ -17,43 +17,56 @@ public class Consultas {
         registrarProducto();
 
         EntityManager em = JPAUtils.getEntityManager();
-        ClienteDao clienteDao = new ClienteDao(em);
-        ProductoDao productoDao = new ProductoDao(em);
-        PedidoDao pedidoDao = new PedidoDao(em);
+//        ClienteDao clienteDao = new ClienteDao(em);
+//        ProductoDao productoDao = new ProductoDao(em);
+//        PedidoDao pedidoDao = new PedidoDao(em);
+//
+//        // Embedded - Llaves compuestas (Embedded debe implementar "Serializable")
+//        Categoria res = em.find(Categoria.class, new CategoriaId("CELULARES", "123"));
+//        System.out.println(res.getNombre());
 
-        Producto producto = productoDao.consultaPorId(1L);
+//        List<Producto> producto = productoDao.consultarConCriteria("Motorola", null, null);
+//        System.out.println(producto.get(0));
 
-        Cliente cliente = new Cliente("Juan", "12312312");
-        Pedido pedido = new Pedido(cliente);
-        pedido.agregarItems(new ItemsPedido(5, producto, pedido));
+//        Producto producto = productoDao.consultaPorId(1L);
+//
+//        Cliente cliente = new Cliente("Juan", "12312312");
+//        Pedido pedido = new Pedido(cliente);
+//        pedido.agregarItems(new ItemsPedido(5, producto, pedido));
+//
+//        em.getTransaction().begin();
+//
+//        BigDecimal res = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
+//        System.out.println(res);
+//
+//        clienteDao.guardar(cliente);
+//        pedidoDao.guardar(pedido);
+//
+//        em.getTransaction().commit();
 
-        em.getTransaction().begin();
+//        // Consultar datos Embedded
+//        Cliente queryCliente = clienteDao.consultaPorId(1L);
+//        System.out.println(queryCliente.getNombre());
+//        System.out.println(queryCliente.getDni());
+//
+//        BigDecimal total = pedidoDao.valorTotalVendido();
+//        System.out.println("valor total: " + total);
+//
+//        // Query complejo, agupando y sumando valores
+//        List<RelatorioDeVenta> relatorioVO = pedidoDao.relatorioDeVentasVO();
+//        relatorioVO.forEach(System.out::println);
+//
+//        // Estrategia para evitar errores con peticiones de tipo LAZY
+//        Pedido pedidoConCliente = pedidoDao.consultaPedidoConCliente(1L);
 
-        BigDecimal res = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
-        System.out.println(res);
-
-        clienteDao.guardar(cliente);
-        pedidoDao.guardar(pedido);
-
-        em.getTransaction().commit();
-
-        BigDecimal total = pedidoDao.valorTotalVendido();
-        System.out.println("valor total: " + total);
-
-        List<RelatorioDeVenta> relatorioVO = pedidoDao.relatorioDeVentasVO();
-        relatorioVO.forEach(System.out::println);
-
-        // Estrategia para evitar errores con peticiones de tipo LAZY
-        Pedido pedidoConCliente =  pedidoDao.consultaPedidoConCliente(1L);
-
-        // consultas simples
+//        // consultas simples
 //        Producto producto = productoDao.consultaPorId(1L);
 //        System.out.println(producto.getNombre());
 
 //        List<Producto> lista = productoDao.consultaTodo();
 //        lista.forEach(p -> System.out.println(p.getNombre()));
 
-        // consultas con filtro
+//        // consultas con filtro
 //        List<Producto> listaN = productoDao.consultaPorNombre("Motorola");
 //        listaN.forEach(p -> System.out.println(p.getNombre()));
 
@@ -63,14 +76,14 @@ public class Consultas {
 //        BigDecimal precio = productoDao.consultarPrecioPorNombreDeProducto("Motorola");
 //        System.out.println(precio);
 
-        em.close();
+//        em.close();
 
-        // Acceder al elemento luego de cerrada al conexion (LAZY fetch)
-        System.out.println(pedidoConCliente.getCliente().getNombre());
+//        // Acceder al elemento luego de cerrada al conexion (LAZY fetch)
+//        System.out.println(pedidoConCliente.getCliente().getNombre());
     }
 
     private static void registrarProducto() {
-        Categoria celulares = new Categoria("CELULARES");
+        Categoria celulares = new Categoria("CELULARES", "123");
         Producto celular = new Producto("Motorola",
                 "Moto G7 power",
                 new BigDecimal(1000),
